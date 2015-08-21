@@ -1,22 +1,31 @@
 #!/bin/bash
 
-if [ -d /tmp/project/dist ]
- then 
-	echo "Directory dist exist"
- else
-        mkdir -p /tmp/project/dist  
-fi
-
-if [ -d /tmp/project/current ]     
- then 
-        echo "Directory current exist"
- else
-        mkdir -p /tmp/project/current
-fi
-
-if [ -d /tmp/project/old ]     
- then 
+if [ -d /var/lib/jboss/server/all/deploy/ROOT.war/old ]
+ then
         echo "Directory old exist"
  else
-        mkdir -p /tmp/project/old
+        mkdir -p /var/lib/jboss/server/all/deploy/ROOT.war/old
 fi
+
+if [ -d /var/lib/jboss/server/all/deploy/ROOT.war/dist ]
+ then
+        echo "Directory dist exist"
+else
+        mkdir -p /var/lib/jboss/server/all/deploy/ROOT.war/dist
+
+fi
+
+if [ -d /var/lib/jboss/server/all/deploy/ROOT.war/current ]     
+ then 
+        echo "Directory current exist"
+        mv /var/lib/jboss/server/all/deploy/ROOT.war/current/*.tar.gz /var/lib/jboss/server/all/deploy/ROOT.war/old/
+	mv /tmp/jboss*.tar.gz /var/lib/jboss/server/all/deploy/ROOT.war/current/
+	cd /var/lib/jboss/server/all/deploy/ROOT.war/current/
+	tar xzf *.tar.gz -C /var/lib/jboss/server/all/deploy/ROOT.war/dist
+ else
+        mkdir -p /var/lib/jboss/server/all/deploy/ROOT.war/current
+        mv /tmp/jboss*.tar.gz /var/lib/jboss/server/all/deploy/ROOT.war/current/
+	cd /var/lib/jboss/server/all/deploy/ROOT.war/current/
+        tar xzf *.tar.gz -C /var/lib/jboss/server/all/deploy/ROOT.war/dist
+fi
+
